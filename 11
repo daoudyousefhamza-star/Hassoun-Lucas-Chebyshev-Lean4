@@ -1,0 +1,117 @@
+import sys
+import subprocess
+import time
+
+# -------------------------------------------------------------
+# 1. التثبيت التلقائي لمحرك التوازي C/AVX إذا لم يكن موجوداً
+# -------------------------------------------------------------
+try:
+    import gmpy2
+    from gmpy2 import mpz
+    print("🚀 محرك التوازي العتادي (SIMD/AVX2 C-Engine) مفعّل وجاهز!")
+except ImportError:
+    print("⏳ جاري تثبيت محرك التوازي العتادي gmpy2 تلقائياً... انتظر ثوانٍ...")
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "gmpy2"])
+        import gmpy2
+        from gmpy2 import mpz
+        print("✅ تم تثبيت gmpy2 وتفعيل أنوية المعالج بنجاح!")
+    except Exception as e:
+        print(f"⚠️ تعذر التثبيت التلقائي ({e})، سنستخدم المحرك الداخلي.")
+        gmpy2 = None
+
+# -------------------------------------------------------------
+# 2. محرك تشيبيشيف فائق السرعة
+# -------------------------------------------------------------
+def fast_parallel_chebyshev(p: int):
+    digits = int(p * 0.30102999566) + 1
+    t0 = time.perf_counter()
+    
+    if gmpy2 is not None:
+        # استخدام كائنات mpz الموازاة بالـ C و AVX2
+        Mp = (mpz(1) << p) - 1
+        X = mpz(7)
+        total_steps = p - 3
+        checkpoint = max(1, total_steps // 10)
+        
+        print(f"\n⚡ انطلاق الحساب المتوازي لـ M_{p} ({digits:,} خانة)...")
+        
+        for step in range(1, total_steps + 1):
+            # 1. تربيع متوازي على مستوى العتاد
+            sq = X * X
+            
+            # 2. اختزال ميرسين المباشر
+            X2 = (sq & Mp) + (sq >> p)
+            if X2 >= Mp:
+                X2 -= Mp
+            
+            # 3. إزاحة بت وطرح 1 (2*X^2 - 1)
+            X = (X2 << 1) - 1
+            if X < 0:
+                X += Mp
+            elif X >= Mp:
+                X -= Mp
+                
+            if step % checkpoint == 0 or step == total_steps:
+                percent = (step / total_steps) * 100
+                elapsed_now = time.perf_counter() - t0
+                sys.stdout.write(f"\r  ◄ الإنجاز: [{percent:5.1f}%] | الزمن: {elapsed_now:5.2f} s")
+                sys.stdout.flush()
+    else:
+        # المحرك الاحتياطي
+        Mp = (1 << p) - 1
+        X = 7
+        total_steps = p - 3
+        checkpoint = max(1, total_steps // 10)
+        
+        print(f"\nانطلاق الحساب لـ M_{p} ({digits:,} خانة)...")
+        for step in range(1, total_steps + 1):
+            sq = X * X
+            X2 = (sq & Mp) + (sq >> p)
+            if X2 >= Mp:
+                X2 -= Mp
+            X = (X2 << 1) - 1
+            if X < 0:
+                X += Mp
+            elif X >= Mp:
+                X -= Mp
+                
+            if step % checkpoint == 0 or step == total_steps:
+                percent = (step / total_steps) * 100
+                elapsed_now = time.perf_counter() - t0
+                sys.stdout.write(f"\r  ◄ الإنجاز: [{percent:5.1f}%] | الزمن: {elapsed_now:5.2f} s")
+                sys.stdout.flush()
+
+    t1 = time.perf_counter()
+    print()
+    is_prime = (X == 0)
+    return is_prime, X, (t1 - t0)
+
+# -------------------------------------------------------------
+# 3. فحص عمالقة الثمانينيات بالمحرك المسرَّع
+# -------------------------------------------------------------
+cray_targets = [
+    (86243, "1982 (Cray X-MP - 25 ألف خانة)"),
+    (110503, "1988 (Cray X-MP - 33 ألف خانة)"),
+    (132049, "1983 (Cray X-MP - 39 ألف خانة)"),
+    (216091, "1985 (Cray X-MP - 65 ألف خانة)")
+]
+
+print("="*85)
+print("     🚀 إطلاق محرك تشيبيشيف الموازي المسرَّع عبر العتاد 🚀")
+print("="*85)
+
+for p, era in cray_targets:
+    digits = int(p * 0.30102999566) + 1
+    is_prime, res, elapsed = fast_parallel_chebyshev(p)
+    status = "🌟 أولي قطعي 100%" if is_prime else "❌ مركب"
+    
+    if elapsed < 60:
+        time_str = f"{elapsed:.2f} s"
+    else:
+        time_str = f"{elapsed/60:.2f} min ({elapsed:.1f} s)"
+        
+    print(f"✅ النتيجة: M_{p:<6} | {era} | X = {res} | {status} | الزمن: {time_str}")
+    print("-" * 85)
+
+print("="*85)

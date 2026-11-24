@@ -1,0 +1,11 @@
+\xpg@aux {}{english}
+\xpg@aux {}{arabic}
+\xpg@aux {}{english}
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {section}{\numberline {2}Formal Theorems Certified in Lean 4}{2}{section.2}%
+\contentsline {section}{\numberline {3}Analytic Expansion and Fuss-Catalan Coefficients}{3}{section.3}%
+\contentsline {section}{\numberline {4}High-Performance Bitwise Mod-120 Sieve Engine}{3}{section.4}%
+\contentsline {section}{\numberline {5}Empirical Benchmarks and Results}{3}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Mod-120 Sieve Performance}{3}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Giant Logarithmic Jump Benchmark ($M_{136,279,841}$)}{4}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Conclusion and Zenodo Archiving}{4}{section.6}%

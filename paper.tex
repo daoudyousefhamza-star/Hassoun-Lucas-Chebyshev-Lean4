@@ -1,0 +1,196 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+
+\geometry{margin=1in}
+
+\title{\textbf{Fuss--Catalan Series for the Algebraic Equation
+        $x-bx^n=a$}}
+\author{\textbf{Dawood Ali Hassoun}\\
+\textit{Independent Mathematical Researcher, Latakia, Syria}}
+\date{November 2026}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+For a fixed integer $n\geq 2$, we derive the power-series branch through
+$x=a$ of the equation $x-bx^n=a$. Lagrange--B\"urmann inversion gives the
+Fuss--Catalan coefficients
+\[
+C_k^{(n)}=\frac{1}{nk+1}\binom{nk+1}{k}
+=\frac{1}{(n-1)k+1}\binom{nk}{k}.
+\]
+The resulting series has radius
+$R_n=(n-1)^{n-1}/n^n$ in $z=ba^{n-1}$. It also converges absolutely at
+the boundary $|z|=R_n$. We give the derivation and the convergence argument
+explicitly. The Lean code currently verifies selected coefficient facts and
+algebraic identities; it does not formally verify Lagrange inversion or the
+analytic convergence theorem.
+\end{abstract}
+
+\section{Scope and branch}
+Throughout, $n$ is a fixed integer with $n\geq 2$, and $a,b$ are real.
+The equation is a special trinomial equation, not a general polynomial of
+degree $n$. It can have more than one root; the series below describes the
+branch that equals $a$ at $b=0$.
+
+If $a=0$, this branch is $x=0$, which solves $x=bx^n$. Assume henceforth
+$a\neq 0$, and set
+\[
+y=\frac{x}{a},\qquad z=ba^{n-1},\qquad w=y-1.
+\]
+Then the original equation is equivalent to
+\[
+y=1+zy^n,\qquad w=z(1+w)^n. \tag{1}
+\]
+Since the derivative with respect to $w$ of
+$w-z(1+w)^n$ equals $1$ at $(w,z)=(0,0)$, the analytic implicit function
+theorem gives a unique analytic solution $w(z)$ near $z=0$ with $w(0)=0$.
+
+\section{Coefficient derivation}
+\begin{theorem}[Fuss--Catalan expansion]
+For $|z|<R_n$, the branch in (1) is
+\[
+x=a\sum_{k=0}^{\infty} C_k^{(n)}z^k,\qquad
+C_k^{(n)}=\frac{1}{nk+1}\binom{nk+1}{k},
+\]
+where $C_0^{(n)}=1$.
+\end{theorem}
+
+\begin{proof}
+We use the Lagrange--B\"urmann coefficient formula. If
+$W=z\phi(W)$, $\phi(0)\neq 0$, and $F$ is analytic near $0$, then for
+$k\geq 1$,
+\[
+\operatorname{Coeff}_{z^k}\!\left(F(W(z))\right)
+=\frac{1}{k}[u^{k-1}]F'(u)\phi(u)^k. \tag{2}
+\]
+For completeness, this formula follows by writing coefficient extraction
+as a residue and making the local change of variable
+$z=u/\phi(u)$:
+\[
+\begin{aligned}
+\operatorname{Coeff}_{z^k}\!\left(F(W(z))\right)
+&=\operatorname{Res}_{u=0}
+\left(
+\frac{F(u)\phi(u)^k}{u^{k+1}}
+-\frac{F(u)\phi(u)^{k-1}\phi'(u)}{u^k}
+\right)\,du\\
+&=\frac{1}{k}\operatorname{Res}_{u=0}
+\frac{F'(u)\phi(u)^k}{u^k}\,du\\
+&=\frac{1}{k}[u^{k-1}]F'(u)\phi(u)^k.
+\end{aligned}
+\]
+The middle equality uses that the residue of the derivative of a
+Laurent series is zero.
+
+Apply (2) to $W=w$, $\phi(u)=(1+u)^n$, and $F(u)=u$. Then
+\[
+[z^k]w(z)=\frac{1}{k}[u^{k-1}](1+u)^{nk}
+=\frac{1}{k}\binom{nk}{k-1}.
+\]
+Using factorial definitions of the binomial coefficients,
+\[
+\frac{1}{k}\binom{nk}{k-1}
+=\frac{(nk)!}{k!\,((n-1)k+1)!}
+=\frac{1}{nk+1}\binom{nk+1}{k}
+=C_k^{(n)}.
+\]
+Also $y=1+w$, so its constant coefficient is $1=C_0^{(n)}$ and its
+coefficient of $z^k$ for $k\geq1$ is $C_k^{(n)}$. Since $x=ay$, the
+claimed expansion follows wherever this power series converges.
+
+Equation (1) also yields the coefficient recurrence
+\[
+C_0^{(n)}=1,\qquad
+C_k^{(n)}
+=\sum_{\substack{j_1+\cdots+j_n=k-1\\j_i\geq0}}
+  C_{j_1}^{(n)}\cdots C_{j_n}^{(n)}
+\quad(k\geq1), \tag{3}
+\]
+by comparing coefficients in $y=1+zy^n$. The convergence proof below
+shows that this Taylor series is analytic on $|z|<R_n$. Both sides of
+(1) are analytic there and agree near $z=0$, so the identity theorem
+shows that the series satisfies the fixed-point equation throughout
+$|z|<R_n$.
+\end{proof}
+
+\section{Radius of convergence and boundary}
+\begin{theorem}
+For fixed $n\geq2$, the power series $\sum_{k\geq0}C_k^{(n)}z^k$ has
+radius of convergence
+\[
+R_n=\frac{(n-1)^{n-1}}{n^n}.
+\]
+It converges absolutely for $|z|\leq R_n$ and diverges for $|z|>R_n$.
+\end{theorem}
+
+\begin{proof}
+Put $A_n=n^n/(n-1)^{n-1}$. Stirling's formula applied to
+\[
+C_k^{(n)}
+=\frac{1}{(n-1)k+1}\binom{nk}{k}
+\]
+gives
+\[
+C_k^{(n)}
+\sim
+\frac{1}{n-1}\sqrt{\frac{n}{2\pi(n-1)}}\,
+A_n^k k^{-3/2}. \tag{4}
+\]
+In particular, $\lim_{k\to\infty}(C_k^{(n)})^{1/k}=A_n$, so the
+Cauchy--Hadamard formula gives radius $1/A_n=R_n$.
+
+For $|z|<R_n$, the root test gives absolute convergence. At
+$|z|=R_n$, (4) shows that the absolute values of the terms are
+asymptotic to a positive constant times $k^{-3/2}$, so the series
+converges absolutely by comparison with the $p$-series of exponent
+$3/2$. If $|z|>R_n$, (4) shows that the terms do not tend to zero.
+This proves both the radius and the stated boundary behavior.
+\end{proof}
+
+\begin{remark}
+The radius is the boundary of the analytic power-series branch. The
+absolute-convergence statement is not ``if and only if $|z|<R_n$'':
+absolute convergence also holds at $|z|=R_n$.
+\end{remark}
+
+\section{Example}
+For $n=5$,
+\[
+R_5=\frac{4^4}{5^5}=\frac{256}{3125}=0.08192,
+\]
+and the first coefficients are
+\[
+C_0^{(5)}=1,\quad C_1^{(5)}=1,\quad C_2^{(5)}=5,\quad
+C_3^{(5)}=35,\quad C_4^{(5)}=285,\quad C_5^{(5)}=2530.
+\]
+For example, the parameter choices $(a,b)=(1,0.05)$ and $(2,0.002)$
+give $z=0.05$ and $z=0.032$, respectively, both strictly inside the
+convergence disk. These examples illustrate the theorem; numerical
+residuals alone are not used as proof.
+
+\section{Lean formalization status}
+In \texttt{Basic.lean}, the coefficient is defined by the closed binomial
+formula, and selected initial values and elementary residual identities
+are checked. The theorem named \texttt{hassoun\_general\_root} only rearranges
+the equation under the assumption that $x=a+bx^n$. Those declarations do
+not prove (2), (3), the infinite-series identity, or the convergence
+radius. Therefore this paper presents an analytic proof, but does not claim
+that the full analytic theorem has already been machine-checked in Lean.
+
+\section{Conclusion}
+Lagrange--B\"urmann inversion gives an exact Fuss--Catalan series for the
+branch through $x=a$, and Stirling's formula gives its sharp radius and
+boundary convergence. The result is a standard analytic inversion
+specialized to $x-bx^n=a$; any claim of novelty or full Lean verification
+would require additional results beyond the derivation given here.
+
+\end{document}

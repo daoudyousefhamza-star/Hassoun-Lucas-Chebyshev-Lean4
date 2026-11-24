@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منظومة مبرهنات حسّون والقفز اللوغاريتمي الفائق | Lean 4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #111827;
+            --accent-primary: #6366f1;
+            --accent-secondary: #10b981;
+            --accent-gold: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-main); line-height: 1.8; padding-bottom: 60px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .hero { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border-bottom: 1px solid var(--border-color); padding: 80px 0 60px; text-align: center; }
+        .badge { display: inline-block; background: rgba(16, 185, 129, 0.15); color: var(--accent-secondary); border: 1px solid var(--accent-secondary); padding: 6px 16px; border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 20px; }
+        .hero h1 { font-size: 2.6rem; font-weight: 900; margin-bottom: 15px; background: linear-gradient(to left, #ffffff, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .author-box { display: inline-flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 10px 24px; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 15px; }
+        section { padding: 50px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .section-title { text-align: center; margin-bottom: 40px; }
+        .section-title h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; }
+        .card h3 { font-size: 1.25rem; margin-bottom: 12px; color: #fff; }
+        .example-box { background: var(--bg-card); border-right: 4px solid var(--accent-gold); padding: 15px; border-radius: 8px; font-family: monospace; margin-top: 15px; direction: ltr; text-align: left; }
+        table { width: 100%; border-collapse: collapse; text-align: right; background: var(--bg-secondary); border-radius: 12px; overflow: hidden; }
+        th, td { padding: 16px 20px; border-bottom: 1px solid var(--border-color); }
+        th { background: rgba(255,255,255,0.03); color: var(--accent-gold); }
+        .code-container { background: #090d16; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; direction: ltr; }
+        pre { padding: 20px; overflow-x: auto; color: #e2e8f0; font-size: 0.9rem; }
+        footer { text-align: center; padding: 30px 0; color: var(--text-muted); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <div class="badge"><i class="fa-solid fa-circle-check"></i> تم التحقق الصوري في Lean 4 (Goals Accomplished!)</div>
+            <h1>منظومة مبرهنات حسّون والقفز اللوغاريتمي الفائق</h1>
+            <p>مشروع بحثي وبرمجي متكامل يدمج بين التحليل الجبري في الحلقات التبديلية واختبار أعداد ميرسين الأولية</p>
+            <div class="author-box">
+                <i class="fa-solid fa-user-graduate" style="color: var(--accent-primary);"></i>
+                <div>
+                    <strong>الباحث: داؤد علي حسّون</strong>
+                    <span style="display: block; font-size: 0.85rem; color: var(--text-muted);">اللاذقية، سوريا 🇸🇾 | DOI: 10.5281/zenodo.14497409</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <section>
+            <div class="section-title"><h2>المحاور الرياضية الكبرى لمنظومة حسّون</h2></div>
+            <div class="grid">
+                <div class="card">
+                    <h3>1. الـ 50 مبرهنة في الحلقات CommRing</h3>
+                    <p>تعميم معادلات فوس-كاتالان وهندسة الأوتار والأبعاد المتعددة لتشمل أي حلقة تبديلية تجريدية.</p>
+                </div>
+                <div class="card">
+                    <h3>2. مبرهنة القفز اللوغاريتمي الفائق</h3>
+                    <p>اختزال حساب القوى الفائقة \(x^{k \cdot n}\) من \(k\) خطوة إلى \(m = \log_2(k)\) تربيعات فقط عبر المتطابقة \(b^{2^m} x^{2^m n} = (x-a)^{2^m}\).</p>
+                </div>
+                <div class="card">
+                    <h3>3. إطار لوكاس-تشيبيشيف للأعداد الأولية</h3>
+                    <p>إلغاء طرح العدد (-2) من اختبار لوكاس وتحويله لنظام تشيبيشيف \(T_2(X) = 2X^2 - 1\) بصيغة \(6k+2\).</p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="section-title"><h2>كود التحقق المعتمد في Lean 4</h2></div>
+            <div class="code-container">
+                <pre><code>import Mathlib
+
+namespace HassounNovel
+/-- مبرهنة حسّون للقفز اللوغاريتمي الفائق (Hassoun Logarithmic Jump) -/
+theorem hassoun_logarithmic_jump
+    {R : Type*} [CommRing R] (n m : ℕ) (a b x : R)
+    (h : x = a + b * x ^ n) :
+    b ^ (2 ^ m) * x ^ (2 ^ m * n) = (x - a) ^ (2 ^ m) := by
+  have hx : b * x ^ n = x - a := by linear_combination -h
+  calc
+    b ^ (2 ^ m) * x ^ (2 ^ m * n) 
+      = b ^ (2 ^ m) * x ^ (n * 2 ^ m) := by rw [mul_comm (2 ^ m) n]
+    _ = b ^ (2 ^ m) * (x ^ n) ^ (2 ^ m) := by rw [pow_mul]
+    _ = (b * x ^ n) ^ (2 ^ m) := by rw [← mul_pow]
+    _ = (x - a) ^ (2 ^ m) := by rw [hx]
+end HassounNovel</code></pre>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 | منظومة مبرهنات حسّون الرياضية</p>
+    </footer>
+</body>
+</html>
